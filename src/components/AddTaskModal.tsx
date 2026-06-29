@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ColumnId, Priority } from '../types';
+import type { ColumnId, Priority } from '../types';
 
 interface Props {
   columnId: ColumnId;

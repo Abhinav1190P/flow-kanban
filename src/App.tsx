@@ -1,6 +1,6 @@
 import { useReducer, useEffect } from 'react';
 import { boardReducer, loadState, saveState } from './reducer';
-import { ColumnId, Priority } from './types';
+import type { ColumnId, Priority } from './types';
 import Column from './components/Column';
 
 const COLUMNS: { id: ColumnId; title: string }[] = [

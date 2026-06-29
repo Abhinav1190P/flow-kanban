@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ColumnId, Task, Priority } from '../types';
+import type { ColumnId, Task, Priority } from '../types';
 import TaskCard from './TaskCard';
 import AddTaskModal from './AddTaskModal';
 

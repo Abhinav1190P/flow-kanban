@@ -1,4 +1,4 @@
-import { BoardState, ColumnId, Priority, Task } from './types';
+import type { BoardState, ColumnId, Priority, Task } from './types';
 
 export const COLUMNS = ['todo', 'inprogress', 'done'] as const;
 
