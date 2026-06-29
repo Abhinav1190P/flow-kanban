@@ -81,10 +81,9 @@ export default function Column({ id, title, tasks, onAdd, onDelete, onMove }: Pr
 
       {showModal && (
         <AddTaskModal
-          columnId={id}
-          onAdd={(title, desc, priority) => onAdd(title, desc, priority, id)}
-          onClose={() => setShowModal(false)}
-        />
+            onAdd={(title, desc, priority) => onAdd(title, desc, priority, id)}
+            onClose={() => setShowModal(false)}
+            />
       )}
     </div>
   );

@@ -2,12 +2,11 @@ import { useState } from 'react';
 import type { ColumnId, Priority } from '../types';
 
 interface Props {
-  columnId: ColumnId;
   onAdd: (title: string, description: string, priority: Priority) => void;
   onClose: () => void;
 }
 
-export default function AddTaskModal({ columnId, onAdd, onClose }: Props) {
+export default function AddTaskModal({ onAdd, onClose }: Props) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [priority, setPriority] = useState<Priority>('medium');
