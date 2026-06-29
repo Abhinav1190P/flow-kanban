@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useDroppable } from '@dnd-kit/core';
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import type { ColumnId, Task, Priority } from '../types';
 import TaskCard from './TaskCard';
 import AddTaskModal from './AddTaskModal';
@@ -12,21 +14,24 @@ interface Props {
   onMove: (id: string, to: ColumnId) => void;
 }
 
-const columnStyles: Record<ColumnId, { header: string; badge: string; button: string }> = {
+const columnStyles: Record<ColumnId, { header: string; badge: string; button: string; droppable: string }> = {
   todo: {
     header: 'text-pink-600',
     badge: 'bg-pink-100 text-pink-600',
     button: 'hover:bg-pink-50 border-pink-200 text-pink-400',
+    droppable: 'ring-pink-300',
   },
   inprogress: {
     header: 'text-purple-600',
     badge: 'bg-purple-100 text-purple-600',
     button: 'hover:bg-purple-50 border-purple-200 text-purple-400',
+    droppable: 'ring-purple-300',
   },
   done: {
     header: 'text-emerald-600',
     badge: 'bg-emerald-100 text-emerald-600',
     button: 'hover:bg-emerald-50 border-emerald-200 text-emerald-400',
+    droppable: 'ring-emerald-300',
   },
 };
 
@@ -34,8 +39,15 @@ export default function Column({ id, title, tasks, onAdd, onDelete, onMove }: Pr
   const [showModal, setShowModal] = useState(false);
   const styles = columnStyles[id];
 
+  const { setNodeRef, isOver } = useDroppable({ id });
+
   return (
-    <div className="flex flex-col bg-pink-50/60 rounded-2xl p-4 gap-3 min-h-[500px] w-full">
+    <div
+      ref={setNodeRef}
+      className={`flex flex-col bg-pink-50/60 rounded-2xl p-4 gap-3 min-h-[500px] w-full transition-all ${
+        isOver ? `ring-2 ${styles.droppable} bg-pink-50` : ''
+      }`}
+    >
       {/* Header */}
       <div className="flex items-center justify-between mb-1">
         <h2 className={`font-bold text-sm tracking-wide ${styles.header}`}>{title}</h2>
@@ -45,17 +57,19 @@ export default function Column({ id, title, tasks, onAdd, onDelete, onMove }: Pr
       </div>
 
       {/* Tasks */}
-      <div className="flex flex-col gap-3 flex-1">
-        {tasks.length === 0 ? (
-          <div className="flex-1 flex items-center justify-center">
-            <p className="text-xs text-gray-400 italic">No tasks in this column</p>
-          </div>
-        ) : (
-          tasks.map((task) => (
-            <TaskCard key={task.id} task={task} onDelete={onDelete} onMove={onMove} />
-          ))
-        )}
-      </div>
+      <SortableContext items={tasks.map((t) => t.id)} strategy={verticalListSortingStrategy}>
+        <div className="flex flex-col gap-3 flex-1">
+          {tasks.length === 0 ? (
+            <div className="flex-1 flex items-center justify-center">
+              <p className="text-xs text-gray-400 italic">No tasks in this column</p>
+            </div>
+          ) : (
+            tasks.map((task) => (
+              <TaskCard key={task.id} task={task} onDelete={onDelete} onMove={onMove} />
+            ))
+          )}
+        </div>
+      </SortableContext>
 
       {/* Add Button */}
       <button

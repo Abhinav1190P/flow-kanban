@@ -1,6 +1,6 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Task, ColumnId } from '../types';
+import type { Task, ColumnId } from '../types';
 
 const priorityStyles = {
   low: 'bg-green-100 text-green-700',
